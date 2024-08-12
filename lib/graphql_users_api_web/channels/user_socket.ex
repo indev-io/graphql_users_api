@@ -9,6 +9,7 @@ defmodule GraphqlUsersApiWeb.UserSocket do
     {:ok, socket}
   end
 
+
   def id(_socket) do
     nil
   end

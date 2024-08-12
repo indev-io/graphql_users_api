@@ -24,6 +24,16 @@ defmodule GraphqlUsersApiWeb.Schema do
     field :likes_faxes, non_null(:boolean)
   end
 
+  # @example_user = %{
+  #   id: 5,
+  #   name: "test",
+  #   email: "test@gmail.com",
+  #   preferences: %{
+  #     likes_emails: true,
+  #     likes_phone_calls: true,
+  #     likes_faxes: true
+  #   }
+  # }
   @users [%{
     id: 1,
     name: "Bill",
@@ -154,7 +164,7 @@ defmodule GraphqlUsersApiWeb.Schema do
   subscription do
     field :created_user, :user do
       trigger :create_user, topic: fn _ ->
-        "new_user"
+        "new user"
       end
       config fn _, _ ->
         {:ok, topic: "new_user"}
