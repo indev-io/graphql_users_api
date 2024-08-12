@@ -1,7 +1,6 @@
 defmodule GraphqlUsersApiWeb.UserSocket do
   use Phoenix.Socket
   use Absinthe.Phoenix.Socket, schema: GraphqlUsersApiWeb.Schema
-  # , schema: GraphqlUsersApiWeb.Schema put on previous line
 
   # channel "users", GraphqlUsersApiWeb
   channel "users", GraphqlUsersApiWeb.UserChannel
