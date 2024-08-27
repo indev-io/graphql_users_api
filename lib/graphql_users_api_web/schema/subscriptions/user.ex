@@ -12,12 +12,12 @@ defmodule GraphqlUsersApiWeb.Schema.Subscriptions.User do
     end
 
     field :updated_user_preferences, :preferences do
-    arg :user_id, non_null(:id)
+    arg :id, non_null(:id)
       trigger :update_user_preferences, topic: fn preferences ->
-        preferences.user_id
+        preferences.id
       end
       config fn args, _ ->
-        {:ok, topic: args.user_id}
+        {:ok, topic: args.id}
       end
     end
   end

@@ -5,7 +5,7 @@ defmodule GraphqlUsersApiWeb.Schema.Mutations.User do
   object :user_mutations do
     @desc "Create a user"
     field :create_user, :user do
-      arg :id, non_null(:id)
+      # arg :id, non_null(:id)
       arg :name, non_null(:string)
       arg :email, non_null(:string)
       arg :preferences, non_null(:preferences_filter)
@@ -23,7 +23,7 @@ defmodule GraphqlUsersApiWeb.Schema.Mutations.User do
 
     @desc "Update user preferences"
     field :update_user_preferences, :preferences do
-      arg :user_id, non_null(:id)
+      arg :id, non_null(:id)
       arg :likes_emails, :boolean
       arg :likes_phone_calls, :boolean
       arg :likes_faxes, :boolean

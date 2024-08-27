@@ -7,6 +7,18 @@
 # General application configuration
 import Config
 
+config :graphql_users_api, GraphqlUsersApi.Repo,
+  database: "graphql_users_api_repo",
+  username: "devinturner",
+  # password: "pass",
+  hostname: "localhost"
+
+config :graphql_users_api,
+  ecto_repos: [GraphqlUsersApi.Repo]
+
+config :ecto_shorts,
+      repo: GraphqlUsersApi.Repo,
+      error_module: EctoShorts.Actions.Error
 config :graphql_users_api,
   generators: [timestamp_type: :utc_datetime]
 

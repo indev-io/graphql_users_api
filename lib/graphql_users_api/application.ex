@@ -9,6 +9,7 @@ defmodule GraphqlUsersApi.Application do
   @spec start(any(), any()) :: {:error, any()} | {:ok, pid()}
   def start(_type, _args) do
     children = [
+      GraphqlUsersApi.Repo,
       GraphqlUsersApiWeb.Telemetry,
       {DNSCluster, query: Application.get_env(:graphql_users_api, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: GraphqlUsersApi.PubSub},

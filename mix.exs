@@ -45,7 +45,11 @@ defmodule GraphqlUsersApi.MixProject do
       {:absinthe, "~> 1.7"},
       {:absinthe_plug, "~> 1.5"},
       {:phoenix_pubsub, "~> 2.0"},
-      {:absinthe_phoenix, "~> 2.0"}
+      {:absinthe_phoenix, "~> 2.0"},
+      {:ecto_sql, "~> 3.12"},
+      {:postgrex, "~> 0.19.1"},
+      {:dataloader, "~> 1.0"},
+      {:ecto_shorts, "~> 2.4"}
     ]
   end
 
