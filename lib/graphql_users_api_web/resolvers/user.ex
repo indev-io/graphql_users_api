@@ -1,6 +1,5 @@
 defmodule GraphqlUsersApiWeb.Resolvers.User do
-  alias EctoShorts.Actions
-  alias GraphqlUsersApiWeb.User
+
   alias GraphqlUsersApi.Accounts
   def find(%{id: id},_ ) do
     id = String.to_integer(id)
@@ -12,8 +11,7 @@ defmodule GraphqlUsersApiWeb.Resolvers.User do
   end
 
   def create(params, _) do
-    params
-    |> Accounts.create_user
+      Accounts.create_user(params)
   end
 
   def update(%{id: id} = params, _) do

@@ -4,8 +4,14 @@ defmodule GraphqlUsersApi.Accounts do
   alias EctoShorts.Actions
 
   def list_users(params \\ %{}) do
-    ids = Actions.all(Preference, params) |> Enum.map(fn %{id: id} -> id end)
-    list = Actions.all(User, params) |> Enum.filter(fn %{id: id} -> Enum.member?(ids, id) end)
+    ids =
+      Preference
+      |> Actions.all(params)
+      |> Enum.map(fn %{id: id} -> id end)
+    list =
+      User
+      |> Actions.all(params)
+      |> Enum.filter(fn %{id: id} -> Enum.member?(ids, id) end)
     {:ok, list}
   end
 

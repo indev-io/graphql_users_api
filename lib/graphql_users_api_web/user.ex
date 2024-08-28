@@ -38,7 +38,7 @@ defmodule GraphqlUsersApiWeb.User do
   }]
 
   def find(%{id: id}) do
-    case Enum.find(@users, &(&1.id == id)) do
+    case Enum.find(@users, &(&1.id === id)) do
       nil -> {:error, %{message: "not found", details: %{id: id}}}
       user -> {:ok, user}
     end
@@ -52,11 +52,11 @@ defmodule GraphqlUsersApiWeb.User do
   end
 
   defp search_query_is_subset_of_map(search_query, map) do
-    Enum.all?(search_query, fn {k, v} -> (is_map_key(map, k) and v == map[k]) end)
+    Enum.all?(search_query, fn {k, v} -> (is_map_key(map, k) and v === map[k]) end)
   end
 
   def create_user(id, params) do
-    case Enum.find(@users, &(&1.id == id)) do
+    case Enum.find(@users, &(&1.id === id)) do
       nil -> {:ok, params}
       _ -> {:error, "A user with id of #{id} already exists"}
     end
