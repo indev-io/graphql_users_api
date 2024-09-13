@@ -7,7 +7,6 @@ defmodule GraphqlUsersApi.Accounts.Preference do
     field :likes_phone_calls, :boolean, default: false
     field :likes_faxes, :boolean, default: false
 
-    # belongs_to :user, GraphqlUsersApi.Accounts.User
   end
 
   def create_changeset(params) do
@@ -21,4 +20,5 @@ defmodule GraphqlUsersApi.Accounts.Preference do
     |> cast(attrs, @available_fields)
     |> validate_required(@available_fields)
   end
+
 end
