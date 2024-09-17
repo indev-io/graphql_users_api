@@ -3,34 +3,22 @@ defmodule GraphqlUsersApi.Accounts do
   alias GraphqlUsersApi.Accounts.Preference
   alias EctoShorts.Actions
 
-  def list_users(params \\ %{}) do
-    query = Enum.reduce(params, User, &convert_field_to_query/2)
-    users = Actions.all(query, params)
+  @possible_preferences [:likes_emails, :likes_faxes, :likes_phone_calls]
+
+  def list_users(params) do
+    cond do
+    has_at_least_one_key(params, @possible_preferences) ->
+    {preferences, params} = Map.split(params, @possible_preferences)
+    users = User |> User.join_preferences() |> Preference.by_preferences(preferences) |> Actions.all(params)
     {:ok, users}
+    true ->
+    users = Actions.all(User, params)
+    {:ok, users}
+    end
   end
 
-  defp convert_field_to_query({:name, value}, query)do
-    User.by_name(query, value)
-  end
-
-  defp convert_field_to_query({:email, value}, query) do
-    User.by_email(query, value)
-  end
-
-  defp convert_field_to_query({:likes_emails, value}, query) do
-    User.by_likes_emails(query, value)
-  end
-
-  defp convert_field_to_query({:likes_faxes, value}, query) do
-    User.by_likes_faxes(query, value)
-  end
-
-  defp convert_field_to_query({:likes_phone_calls, value}, query) do
-    User.by_likes_phone_calls(query, value)
-  end
-
-  defp convert_field_to_query(_, query) do
-    query
+  defp has_at_least_one_key(map, list_of_keys) do
+    Enum.any?(list_of_keys, &Map.has_key?(map, &1))
   end
 
   @spec find_user(keyword() | map()) :: {:error, any()} | {:ok, %{optional(atom()) => any()}}
