@@ -1,4 +1,5 @@
 defmodule GraphqlUsersApi.Accounts.Preference do
+  alias GraphqlUsersApi.Accounts.Preference
   alias GraphqlUsersApiWeb.Accounts.User
   import Ecto.Query
   use Ecto.Schema
@@ -31,7 +32,7 @@ defmodule GraphqlUsersApi.Accounts.Preference do
   defp convert_field_to_query({:likes_faxes, value}, query), do: by_likes_faxes(query, value)
   defp convert_field_to_query({:likes_phone_calls, value}, query), do: by_likes_phone_calls(query, value)
 
-  def from(query \\ User), do: from(query, as: :user)
+  def from(query \\ Preference), do: from(query, as: :preference)
 
   def by_likes_emails(query \\ from(), bool), do: where(query, [preference: p], p.likes_emails == ^bool)
   def by_likes_faxes(query \\ from() ,bool), do: where(query, [preference: p], p.likes_faxes == ^bool)
