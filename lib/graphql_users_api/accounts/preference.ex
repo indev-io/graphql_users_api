@@ -1,6 +1,5 @@
 defmodule GraphqlUsersApi.Accounts.Preference do
   alias GraphqlUsersApi.Accounts.Preference
-  alias GraphqlUsersApiWeb.Accounts.User
   import Ecto.Query
   use Ecto.Schema
   import Ecto.Changeset
@@ -24,18 +23,14 @@ defmodule GraphqlUsersApi.Accounts.Preference do
     |> validate_required(@available_fields)
   end
 
+  def from(query \\ Preference), do: from(query, as: :preference)
   def by_preferences(query \\ from(), preferences) do
-    Enum.reduce(preferences, query, &convert_field_to_query/2)
+    Enum.reduce(preferences, query, fn {field, value}, acc -> by_preference(acc, field, value) end)
   end
 
-  defp convert_field_to_query({:likes_emails, value}, query), do: by_likes_emails(query, value)
-  defp convert_field_to_query({:likes_faxes, value}, query), do: by_likes_faxes(query, value)
-  defp convert_field_to_query({:likes_phone_calls, value}, query), do: by_likes_phone_calls(query, value)
+  def by_preference(query \\ from(), field, bool) do
+    where(query, [preference: p], field(p, ^field) == ^bool)
+  end
 
-  def from(query \\ Preference), do: from(query, as: :preference)
-
-  def by_likes_emails(query \\ from(), bool), do: where(query, [preference: p], p.likes_emails == ^bool)
-  def by_likes_faxes(query \\ from() ,bool), do: where(query, [preference: p], p.likes_faxes == ^bool)
-  def by_likes_phone_calls(query \\ from(), bool), do: where(query, [preference: p], p.likes_phone_calls == ^bool)
-
+#2) Our filter for preferences, doesn't actually belong in the user schema, because it's working on preferences, because it's a binding, you can either load that in with a from(Preferences, as: :preferences) or using a join, so the source can be either, but overall it belongs in preferences
 end

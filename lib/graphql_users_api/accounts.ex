@@ -6,14 +6,13 @@ defmodule GraphqlUsersApi.Accounts do
   @possible_preferences [:likes_emails, :likes_faxes, :likes_phone_calls]
 
   def list_users(params) do
-    cond do
-    has_at_least_one_key(params, @possible_preferences) ->
-    {preferences, params} = Map.split(params, @possible_preferences)
+    if has_at_least_one_key(params, @possible_preferences) do
+      {preferences, params} = Map.split(params, @possible_preferences)
     users = User |> User.join_preferences() |> Preference.by_preferences(preferences) |> Actions.all(params)
     {:ok, users}
-    true ->
-    users = Actions.all(User, params)
-    {:ok, users}
+    else
+      users = Actions.all(User, params)
+      {:ok, users}
     end
   end
 
