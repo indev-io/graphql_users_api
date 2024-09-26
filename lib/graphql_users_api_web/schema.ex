@@ -28,4 +28,12 @@ defmodule GraphqlUsersApiWeb.Schema do
   def plugins do
     [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
   end
+
+  def middleware(middleware, _field, %Absinthe.Type.Object{identifier: identifier})
+  when identifier in [:query, :subscription, :mutation] do
+    [GraphqlUsersApiWeb.Middlewares.ResolverHitTracker | middleware]
+  end
+  def middleware(middleware, _field, _object) do
+    middleware
+  end
 end

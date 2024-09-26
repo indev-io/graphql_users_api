@@ -27,6 +27,5 @@ defmodule GraphqlUsersApiWeb.Schema.Mutations.User do
       arg :likes_faxes, :boolean
       resolve &Resolvers.User.update_preferences/2
     end
-
   end
 end

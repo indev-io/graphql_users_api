@@ -1,4 +1,5 @@
 defmodule GraphqlUsersApiWeb.Plugs.ResolverHitTracker do
+  #not being used
   @behaviour Plug
 
   import Plug.Conn

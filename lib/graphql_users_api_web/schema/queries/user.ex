@@ -20,4 +20,5 @@ object :user_queries do
     resolve &Resolvers.User.get_users/2
   end
 end
+
 end
