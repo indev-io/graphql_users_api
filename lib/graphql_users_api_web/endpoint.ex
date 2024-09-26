@@ -35,6 +35,8 @@ defmodule GraphqlUsersApiWeb.Endpoint do
     plug Phoenix.CodeReloader
   end
 
+
+
   plug Phoenix.LiveDashboard.RequestLogger,
     param_key: "request_logger",
     cookie_key: "request_logger"
@@ -50,5 +52,8 @@ defmodule GraphqlUsersApiWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  plug GraphqlUsersApiWeb.Plugs.ResolverHitTracker
   plug GraphqlUsersApiWeb.Router
+
+
 end

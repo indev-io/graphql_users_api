@@ -2,11 +2,13 @@ defmodule GraphqlUsersApiWeb.Schema do
   use Absinthe.Schema
   import_types GraphqlUsersApiWeb.Types.User
   import_types GraphqlUsersApiWeb.Schema.Queries.User
+  import_types GraphqlUsersApiWeb.Schema.Queries.Metrics
   import_types GraphqlUsersApiWeb.Schema.Mutations.User
   import_types GraphqlUsersApiWeb.Schema.Subscriptions.User
 
   query do
     import_fields :user_queries
+    import_fields :metrics_queries
   end
 
   mutation do

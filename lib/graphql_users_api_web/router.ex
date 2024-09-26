@@ -18,4 +18,5 @@ defmodule GraphqlUsersApiWeb.Router do
       socket: GraphqlUsersApiWeb.UserSocket
     end
   end
+
 end
