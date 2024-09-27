@@ -8,7 +8,7 @@ defmodule GraphqlUsersApi.Accounts do
   def list_users(params) do
     if has_at_least_one_key(params, @possible_preferences) do
       {preferences, params} = Map.split(params, @possible_preferences)
-      users = User |> User.join_preferences() |> Preference.by_preferences(preferences) |> Actions.all(params)
+      users = User |> Preference.join_preferences() |> Preference.by_preferences(preferences) |> Actions.all(params)
       {:ok, users}
     else
       users = Actions.all(User, params)

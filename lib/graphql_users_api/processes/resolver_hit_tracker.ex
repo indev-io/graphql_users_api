@@ -22,7 +22,6 @@ defmodule GraphqlUsersApi.Processes.ResolverHitTracker do
 
   def increment(key) do
     Agent.update(ResolverHitTracker, fn state ->
-      IO.inspect(state, message: "this is state")
       if Map.has_key?(state, key) do
         Map.put(state, key, state[key] + 1)
       else

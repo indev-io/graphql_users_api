@@ -32,5 +32,9 @@ defmodule GraphqlUsersApi.Accounts.Preference do
     where(query, [preference: p], field(p, ^field) == ^bool)
   end
 
-#2) Our filter for preferences, doesn't actually belong in the user schema, because it's working on preferences, because it's a binding, you can either load that in with a from(Preferences, as: :preferences) or using a join, so the source can be either, but overall it belongs in preferences
+  def join_preferences(query) do
+    from u in query, preload: :preferences,
+    join: p in assoc(u, :preferences), as: :preference
+  end
+
 end
