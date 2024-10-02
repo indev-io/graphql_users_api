@@ -54,5 +54,4 @@ defmodule GraphqlUsersApiWeb.Endpoint do
   plug Plug.Session, @session_options
   plug GraphqlUsersApiWeb.Router
 
-
 end

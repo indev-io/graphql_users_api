@@ -1,13 +1,15 @@
-defmodule GraphqlUsersApiWeb.ConnCase do
+defmodule GraphqlUsersApi.DataCase do
   use ExUnit.CaseTemplate
+
   using do
     quote do
+      alias GraphqlUsersApi.Repo
 
-      use GraphqlUsersApiWeb, :verified_routes
-      @endpoint GraphqlUsersApiWeb.Endpoint
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query
+      import GraphqlUsersApi.DataCase
 
-      import Phoenix.ConnTest
-      import GraphqlUsersApiWeb.ConnCase
     end
   end
 
@@ -16,6 +18,6 @@ defmodule GraphqlUsersApiWeb.ConnCase do
     unless tags[:async] do
     Ecto.Adapters.SQL.Sandbox.mode(GraphqlUsersApi.Repo, {:shared, self()})
     end
-    {:ok, conn: Phoenix.ConnTest.build_conn()}
+    :ok
   end
 end

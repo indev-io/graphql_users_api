@@ -1,9 +1,9 @@
 defmodule GraphqlUsersApiWeb.Middlewares.ResolverHitTracker do
-  alias GraphqlUsersApi.Processes.ResolverHitTracker
+  alias GraphqlUsersApi.Processes
   @behaviour Absinthe.Middleware
 
   def call(resolution, _) do
-    ResolverHitTracker.increment(resolution.definition.name)
+    Processes.increment_resolver_hit_tracker(resolution.definition.name)
     resolution
   end
 end

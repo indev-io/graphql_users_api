@@ -11,7 +11,8 @@ config :graphql_users_api, GraphqlUsersApi.Repo,
   database: "graphql_users_api_repo",
   username: "devinturner",
   # password: "pass",
-  hostname: "localhost"
+  hostname: "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox
 
 config :graphql_users_api,
   ecto_repos: [GraphqlUsersApi.Repo]

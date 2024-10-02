@@ -1,17 +1,17 @@
 defmodule GraphqlUsersApi.Processes.ResolverHitTracker do
-  alias GraphqlUsersApi.Processes.ResolverHitTracker
   use Agent
 
-  @default_name ResolverHitTracker
+  @default_name __MODULE__
 
   def start_link(opts \\ []) do
     opts = Keyword.put_new(opts, :name, @default_name)
-    {initial_value, opts} = Keyword.pop(opts, :initial_value, %{})
+    {initial_value, opts} = Keyword.pop(opts, :state, %{})
+
     Agent.start_link(fn -> initial_value end, opts)
   end
 
-  def value(key) do
-    Agent.get(ResolverHitTracker, fn state ->
+  def value(name \\ @default_name, key) do
+    Agent.get(name, fn state ->
       if Map.has_key?(state, key) do
         state[key]
       else
@@ -20,8 +20,8 @@ defmodule GraphqlUsersApi.Processes.ResolverHitTracker do
     end)
   end
 
-  def increment(key) do
-    Agent.update(ResolverHitTracker, fn state ->
+  def increment(name \\ @default_name, key) do
+    Agent.update(name, fn state ->
       if Map.has_key?(state, key) do
         Map.put(state, key, state[key] + 1)
       else
