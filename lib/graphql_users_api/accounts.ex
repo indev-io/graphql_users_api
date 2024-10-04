@@ -34,6 +34,7 @@ defmodule GraphqlUsersApi.Accounts do
   end
 
   def update_user_preferences(id, params) do
-    Actions.update(Preference, id, params)
+    {:ok, user} = Actions.find(User, %{id: id})
+    Actions.update(Preference, user.preferences_id, params)
   end
 end
