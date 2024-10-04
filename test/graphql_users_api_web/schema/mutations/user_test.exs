@@ -1,9 +1,11 @@
 defmodule GraphqlUsersApiWeb.Schema.Mutations.UserTest do
 use GraphqlUsersApi.DataCase, async: true
 alias GraphqlUsersApiWeb.Schema
-alias GraphqlUsersApi.Accounts
+
+import GraphqlUsersApi.Support.SetupTasks, only: [setup_user: 1]
 
 
+setup [:setup_user]
 @create_user_doc """
 mutation createUser($name: String!, $email: String!, $preferences: PreferencesFilter!)
 {
@@ -15,12 +17,13 @@ mutation createUser($name: String!, $email: String!, $preferences: PreferencesFi
 }
 
 """
-#IS THIS A USELESS CREATE USER TEST?
+#almost certainly an unneccessary test
 describe "@createUser" do
   test "adds user to database" do
+    test_name = "test12"
     assert {:ok, %{data: data}} = Absinthe.run(@create_user_doc, Schema,
         variables: %{
-          "name" => "test12",
+          "name" => test_name,
           "email" => "test12@gmail.com",
           "preferences" => %{
             "likesEmails" => true,
@@ -29,6 +32,7 @@ describe "@createUser" do
           }
         }
       )
+    assert data["createUser"]["name"] === test_name
   end
 end
 
@@ -43,10 +47,8 @@ email
 }
 """
 describe "@updateUser" do
-  test "updates users information --name and email-- by id" do
-    assert {:ok, user} = Accounts.create_user(%{name: "Test5", email: "Test5@gmail.com",
-        preferences: %{likes_emails: true, likes_phone_calls: true, likes_faxes: true}})
-
+  test "updates users information --name and email-- by id", context do
+    user = context.user
     updated_name = "Test6"
     updated_email = "test6@gmail.com"
     assert {:ok, %{data: data}} = Absinthe.run(@update_user_doc, Schema,
@@ -77,10 +79,8 @@ likesPhoneCalls
 """
 
 describe "@updateUserPreferences" do
-  test "updates user preferences by id" do
-    assert {:ok, user} = Accounts.create_user(%{name: "Test6", email: "Test6@gmail.com",
-    preferences: %{likes_emails: true, likes_phone_calls: true, likes_faxes: true}})
-
+  test "updates user preferences by user id", context do
+    user = context.user
     updated_likes_phone_calls_preference = false
     updated_likes_faxes_preference = false
     updated_likes_emails_preference = false

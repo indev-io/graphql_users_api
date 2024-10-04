@@ -3,7 +3,10 @@ defmodule GraphqlUsersApiWeb.Schema.Subscriptions.UserTest do
 
   alias GraphqlUsersApi.Accounts
 
+  import GraphqlUsersApi.Support.SetupTasks, only: [setup_user: 1]
 
+
+setup [:setup_user]
 
 @created_user_doc """
 subscription createdUser{
@@ -89,21 +92,19 @@ likesPhoneCalls
 """
 
 describe "@userPreferencesUpdated" do
-  test "sends preferences when updatedPreferences mutation is triggered", %{socket: socket} do
-    assert {:ok, user} = Accounts.create_user(%{name: "Test2", email: "Test2@gmail.com",
-    preferences: %{likes_emails: true, likes_phone_calls: true, likes_faxes: true}})
+  test "sends preferences when updatedPreferences mutation is triggered", %{socket: socket, user: user} do
 
     updated_likes_phone_calls_preference = false
     updated_likes_faxes_preference = false
     updated_likes_emails_preference = false
-    user_id = to_string(user.id)
+    user_preferences_id = to_string(user.preferences_id)
 
-    ref = push_doc socket, @updated_user_preferences_doc, variables: %{id: user.id}
+    ref = push_doc socket, @updated_user_preferences_doc, variables: %{id: user.preferences_id}
 
     assert_reply ref, :ok, %{subscriptionId: subscription_id}
 
     ref = push_doc socket, @update_user_doc_preferences_doc, variables: %{
-      "id" => user.id,
+      "id" => user_preferences_id,
       "likesPhoneCalls" => updated_likes_phone_calls_preference,
       "likesFaxes" => updated_likes_faxes_preference,
       "likesEmails" => updated_likes_emails_preference
@@ -111,10 +112,9 @@ describe "@userPreferencesUpdated" do
 
     assert_reply ref, :ok, reply
 
-
     assert %{
       data: %{"updateUserPreferences" => %{
-        "id" => ^user_id,
+        "id" => ^user_preferences_id,
         "likesPhoneCalls" => ^updated_likes_phone_calls_preference,
         "likesFaxes" => ^updated_likes_faxes_preference,
         "likesEmails" => ^updated_likes_emails_preference
@@ -128,7 +128,7 @@ describe "@userPreferencesUpdated" do
       result: %{
         data: %{
           "updatedUserPreferences" => %{
-            "id" => ^user_id,
+            "id" => ^user_preferences_id,
             "likesPhoneCalls" => ^updated_likes_phone_calls_preference,
             "likesFaxes" => ^updated_likes_faxes_preference,
             "likesEmails" => ^updated_likes_emails_preference
