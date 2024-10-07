@@ -79,11 +79,10 @@ defmodule GraphqlUsersApiWeb.Schema.Queries.UserTest do
     end
   end
 
-
-
   defp expected_users_returned_from_query(users, cutoff_id, preference) do
     {:ok, %{data: data}} = absinthe_run_preferences(preference, cutoff_id)
-    ids_of_matching_occurrence_by_type_from_users(users, camel_case_string_to_snake_case_atom(preference)) -- ids_of_matching_occurrence_by_type_from_query( data["users"], preference) === []
+    ids_of_matching_occurrence_by_type_from_users(users, camel_case_string_to_snake_case_atom(preference)) --
+    ids_of_matching_occurrence_by_type_from_query( data["users"], preference) === []
   end
 
   defp absinthe_run_preferences(preference, cutoff_id) do

@@ -81,22 +81,18 @@ likesPhoneCalls
 describe "@updateUserPreferences" do
   test "updates user preferences by user id", context do
     user = context.user
-    updated_likes_phone_calls_preference = false
-    updated_likes_faxes_preference = false
-    updated_likes_emails_preference = false
-
+    updated_preferences = %{
+      "userId" => user.id,
+      "likesPhoneCalls" => false,
+      "likesFaxes" => false,
+      "likesEmails" => false
+      }
     assert {:ok, %{data: data}} = Absinthe.run(@update_user_doc_preferences_doc, Schema,
-        variables: %{
-        "userId" => user.id,
-        "likesPhoneCalls" => updated_likes_phone_calls_preference,
-        "likesFaxes" => updated_likes_faxes_preference,
-        "likesEmails" => updated_likes_emails_preference
-        }
-      )
+        variables: updated_preferences)
     update_user_preferences_res = data["updateUserPreferences"]
-    assert update_user_preferences_res["likesPhoneCalls"] === updated_likes_phone_calls_preference
-    assert update_user_preferences_res["likesFaxes"] === updated_likes_faxes_preference
-    assert update_user_preferences_res["likesEmails"] === updated_likes_faxes_preference
+    assert update_user_preferences_res["likesPhoneCalls"] === updated_preferences["likesPhoneCalls"]
+    assert update_user_preferences_res["likesFaxes"] === updated_preferences["likesFaxes"]
+    assert update_user_preferences_res["likesEmails"] === updated_preferences["likesEmails"]
   end
 end
 

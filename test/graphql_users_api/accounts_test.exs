@@ -22,15 +22,15 @@ defmodule GraphqlUsersApi.AccountsTest do
       first_user = List.first(users)
       cutoff_id = first_user.id - 1
 
-      assert {:ok, returned_users} = Accounts.list_users(%{likes_emails: true, after: cutoff_id})
-      assert length(returned_users) === true_preference_occurrence_by_type(users, :likes_emails)
-
-      assert {:ok, returned_users} = Accounts.list_users(%{likes_phone_calls: true, after: cutoff_id})
-      assert length(returned_users) === true_preference_occurrence_by_type(users, :likes_phone_calls)
-
-      assert {:ok, returned_users} = Accounts.list_users(%{likes_faxes: true, after: cutoff_id})
-      assert length(returned_users) === true_preference_occurrence_by_type(users, :likes_faxes)
+      assert correct_amount_of_users_returned(users, cutoff_id, :likes_emails)
+      assert correct_amount_of_users_returned(users, cutoff_id, :likes_phone_calls)
+      assert correct_amount_of_users_returned(users, cutoff_id, :likes_faxes)
     end
+  end
+
+  defp correct_amount_of_users_returned(users, cutoff_id, preference) do
+    {:ok, returned_users} = Accounts.list_users(Map.put(%{after: cutoff_id}, preference, true))
+    assert length(returned_users) === true_preference_occurrence_by_type(users, preference)
   end
 
   defp true_preference_occurrence_by_type(map_of_users, preference_type) do
@@ -71,17 +71,13 @@ defmodule GraphqlUsersApi.AccountsTest do
   describe "&update_user_preferences/2" do
     test "update user preferences by id", %{users: users} do
       user = List.first(users)
-      updated_likes_emails_preference = false
-      updated_likes_phone_calls_preference = false
-      updated_likes_likes_faxes_preference = false
+      updated_preferences = %{likes_emails: false, likes_phone_calls: false, likes_faxes: false}
       assert {:ok, _preferences} =  Accounts.update_user_preferences(user.id,
-      %{likes_emails: updated_likes_emails_preference,
-      likes_phone_calls: updated_likes_phone_calls_preference,
-      likes_faxes: updated_likes_likes_faxes_preference})
+      updated_preferences)
       assert found_user_preferences = Repo.get_by(Accounts.Preference, user_id: user.id)
-      assert found_user_preferences.likes_emails === updated_likes_emails_preference
-      assert found_user_preferences.likes_phone_calls === updated_likes_phone_calls_preference
-      assert found_user_preferences.likes_faxes === updated_likes_likes_faxes_preference
+      assert updated_preferences.likes_emails === found_user_preferences.likes_emails
+      assert updated_preferences.likes_emails === found_user_preferences.likes_phone_calls
+      assert updated_preferences.likes_emails === found_user_preferences.likes_faxes
     end
   end
 
