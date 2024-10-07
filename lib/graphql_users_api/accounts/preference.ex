@@ -8,6 +8,7 @@ defmodule GraphqlUsersApi.Accounts.Preference do
     field :likes_emails, :boolean, default: false
     field :likes_phone_calls, :boolean, default: false
     field :likes_faxes, :boolean, default: false
+    belongs_to :user, GraphqlUsersApi.Accounts.User
 
   end
 
@@ -21,6 +22,7 @@ defmodule GraphqlUsersApi.Accounts.Preference do
     preference
     |> cast(attrs, @available_fields)
     |> validate_required(@available_fields)
+
   end
 
   def from(query \\ Preference), do: from(query, as: :preference)

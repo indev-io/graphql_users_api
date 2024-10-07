@@ -7,7 +7,7 @@ defmodule GraphqlUsersApiWeb.Types.User do
     field :likes_emails, :boolean
     field :likes_phone_calls, :boolean
     field :likes_faxes, :boolean
-    field :id, :id
+    field :user_id, :id
   end
 
   @desc "A user that has a name, email, and preferences"
@@ -25,6 +25,6 @@ defmodule GraphqlUsersApiWeb.Types.User do
     field :likes_emails, :boolean
     field :likes_phone_calls, :boolean
     field :likes_faxes, :boolean
-    field :id, :id
+    field :user_id, :id
   end
 end

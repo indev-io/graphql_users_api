@@ -69,10 +69,10 @@ end
 
 
 @update_user_doc_preferences_doc """
-mutation updateUserPreferences($id: ID!, $likesEmails: Boolean, $likesFaxes: Boolean, $likesPhoneCalls: Boolean)
+mutation updateUserPreferences($userId: ID!, $likesEmails: Boolean, $likesFaxes: Boolean, $likesPhoneCalls: Boolean)
 {
-updateUserPreferences(id: $id, likesEmails: $likesEmails, likesFaxes: $likesFaxes, likesPhoneCalls: $likesPhoneCalls){
-id
+updateUserPreferences(userId: $userId, likesEmails: $likesEmails, likesFaxes: $likesFaxes, likesPhoneCalls: $likesPhoneCalls){
+userId
 likesEmails
 likesFaxes
 likesPhoneCalls
@@ -81,9 +81,9 @@ likesPhoneCalls
 """
 
 @updated_user_preferences_doc """
-subscription updatedUserPreferences($id: ID!){
-updatedUserPreferences(id: $id){
-id
+subscription updatedUserPreferences($userId: ID!){
+updatedUserPreferences(userId: $userId){
+userId
 likesEmails
 likesFaxes
 likesPhoneCalls
@@ -93,21 +93,18 @@ likesPhoneCalls
 
 describe "@userPreferencesUpdated" do
   test "sends preferences when updatedPreferences mutation is triggered", %{socket: socket, user: user} do
-    IO.puts("user!")
-    IO.inspect(user)
 
     updated_likes_phone_calls_preference = false
     updated_likes_faxes_preference = false
     updated_likes_emails_preference = false
     user_id = to_string(user.id)
-    user_preferences_id = to_string(user.preferences_id)
 
-    ref = push_doc socket, @updated_user_preferences_doc, variables: %{id: user.id}
+    ref = push_doc socket, @updated_user_preferences_doc, variables: %{userId: user.id}
 
     assert_reply ref, :ok, %{subscriptionId: subscription_id}
 
     ref = push_doc socket, @update_user_doc_preferences_doc, variables: %{
-      "id" => user_id,
+      "userId" => user_id,
       "likesPhoneCalls" => updated_likes_phone_calls_preference,
       "likesFaxes" => updated_likes_faxes_preference,
       "likesEmails" => updated_likes_emails_preference
@@ -117,7 +114,7 @@ describe "@userPreferencesUpdated" do
 
     assert %{
       data: %{"updateUserPreferences" => %{
-        "id" => ^user_preferences_id,
+        "userId" => ^user_id,
         "likesPhoneCalls" => ^updated_likes_phone_calls_preference,
         "likesFaxes" => ^updated_likes_faxes_preference,
         "likesEmails" => ^updated_likes_emails_preference
@@ -131,7 +128,7 @@ describe "@userPreferencesUpdated" do
       result: %{
         data: %{
           "updatedUserPreferences" => %{
-            "id" => ^user_preferences_id,
+            "userId" => ^user_id,
             "likesPhoneCalls" => ^updated_likes_phone_calls_preference,
             "likesFaxes" => ^updated_likes_faxes_preference,
             "likesEmails" => ^updated_likes_emails_preference

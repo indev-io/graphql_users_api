@@ -33,8 +33,9 @@ defmodule GraphqlUsersApi.Accounts do
     Actions.create(User, params)
   end
 
-  def update_user_preferences(id, params) do
-    {:ok, user} = Actions.find(User, %{id: id})
-    Actions.update(Preference, user.preferences_id, params)
+  @spec update_user_preferences(any(), keyword() | map()) ::
+          {:error, Ecto.Changeset.t()} | {:ok, %{optional(atom()) => any()}}
+  def update_user_preferences(user_id, params) do
+    Actions.find_and_update(Preference, %{user_id: user_id}, params)
   end
 end

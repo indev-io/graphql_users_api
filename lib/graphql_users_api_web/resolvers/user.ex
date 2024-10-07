@@ -19,7 +19,7 @@ defmodule GraphqlUsersApiWeb.Resolvers.User do
       Accounts.update_user(id, Map.delete(params, :id))
   end
 
-  def update_preferences(%{id: id} = params, _) do
+  def update_preferences(%{user_id: id} = params, _) do
     id = String.to_integer(id)
     Accounts.update_user_preferences(id, params)
   end

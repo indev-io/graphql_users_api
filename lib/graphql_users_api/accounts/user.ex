@@ -5,8 +5,9 @@ defmodule GraphqlUsersApi.Accounts.User do
   schema "users" do
     field :name, :string
     field :email, :string
-    belongs_to :preferences, GraphqlUsersApi.Accounts.Preference
+    has_one :preferences, GraphqlUsersApi.Accounts.Preference
   end
+
   @available_fields [:name, :email]
 
   @spec create_changeset(
@@ -22,6 +23,7 @@ defmodule GraphqlUsersApi.Accounts.User do
     |> cast(attrs, @available_fields)
     |> validate_required(@available_fields)
     |> cast_assoc(:preferences)
+
   end
 
 end

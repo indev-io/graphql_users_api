@@ -67,10 +67,10 @@ describe "@updateUser" do
 end
 
 @update_user_doc_preferences_doc """
-mutation updateUserPreferences($id: ID!, $likesEmails: Boolean, $likesFaxes: Boolean, $likesPhoneCalls: Boolean)
+mutation updateUserPreferences($userId: ID!, $likesEmails: Boolean, $likesFaxes: Boolean, $likesPhoneCalls: Boolean)
 {
-updateUserPreferences(id: $id, likesEmails: $likesEmails, likesFaxes: $likesFaxes, likesPhoneCalls: $likesPhoneCalls){
-id
+updateUserPreferences(userId: $userId, likesEmails: $likesEmails, likesFaxes: $likesFaxes, likesPhoneCalls: $likesPhoneCalls){
+userId
 likesEmails
 likesFaxes
 likesPhoneCalls
@@ -87,7 +87,7 @@ describe "@updateUserPreferences" do
 
     assert {:ok, %{data: data}} = Absinthe.run(@update_user_doc_preferences_doc, Schema,
         variables: %{
-        "id" => user.id,
+        "userId" => user.id,
         "likesPhoneCalls" => updated_likes_phone_calls_preference,
         "likesFaxes" => updated_likes_faxes_preference,
         "likesEmails" => updated_likes_emails_preference
