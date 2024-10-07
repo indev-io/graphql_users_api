@@ -93,18 +93,21 @@ likesPhoneCalls
 
 describe "@userPreferencesUpdated" do
   test "sends preferences when updatedPreferences mutation is triggered", %{socket: socket, user: user} do
+    IO.puts("user!")
+    IO.inspect(user)
 
     updated_likes_phone_calls_preference = false
     updated_likes_faxes_preference = false
     updated_likes_emails_preference = false
+    user_id = to_string(user.id)
     user_preferences_id = to_string(user.preferences_id)
 
-    ref = push_doc socket, @updated_user_preferences_doc, variables: %{id: user.preferences_id}
+    ref = push_doc socket, @updated_user_preferences_doc, variables: %{id: user.id}
 
     assert_reply ref, :ok, %{subscriptionId: subscription_id}
 
     ref = push_doc socket, @update_user_doc_preferences_doc, variables: %{
-      "id" => user_preferences_id,
+      "id" => user_id,
       "likesPhoneCalls" => updated_likes_phone_calls_preference,
       "likesFaxes" => updated_likes_faxes_preference,
       "likesEmails" => updated_likes_emails_preference

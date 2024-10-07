@@ -72,7 +72,6 @@ defmodule GraphqlUsersApiWeb.Schema.Queries.UserTest do
     test "fetches users by preferences", %{users: users}  do
       first_user = List.first(users)
       cutoff_id = first_user.id - 1
-
       assert expected_users_returned_from_query(users, cutoff_id, "likesEmails")
       assert expected_users_returned_from_query(users, cutoff_id, "likesFaxes")
       assert expected_users_returned_from_query(users, cutoff_id, "likesPhoneCalls")
