@@ -76,8 +76,8 @@ defmodule GraphqlUsersApi.AccountsTest do
       updated_preferences)
       assert found_user_preferences = Repo.get_by(Accounts.Preference, user_id: user.id)
       assert updated_preferences.likes_emails === found_user_preferences.likes_emails
-      assert updated_preferences.likes_emails === found_user_preferences.likes_phone_calls
-      assert updated_preferences.likes_emails === found_user_preferences.likes_faxes
+      assert updated_preferences.likes_phone_calls === found_user_preferences.likes_phone_calls
+      assert updated_preferences.likes_faxes === found_user_preferences.likes_faxes
     end
   end
 
