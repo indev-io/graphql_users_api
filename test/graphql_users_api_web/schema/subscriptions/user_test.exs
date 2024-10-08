@@ -1,8 +1,6 @@
 defmodule GraphqlUsersApiWeb.Schema.Subscriptions.UserTest do
   use GraphqlUsersApiWeb.SubscriptionCase
 
-  alias GraphqlUsersApi.Accounts
-
   import GraphqlUsersApi.Support.SetupTasks, only: [setup_user: 1]
 
 
