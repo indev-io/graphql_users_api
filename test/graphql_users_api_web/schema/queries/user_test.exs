@@ -2,8 +2,6 @@ defmodule GraphqlUsersApiWeb.Schema.Queries.UserTest do
   use GraphqlUsersApi.DataCase, async: true
 
   alias GraphqlUsersApiWeb.Schema
-  import GraphqlUsersApi.Support.Utilities
-
   import GraphqlUsersApi.Support.SetupTasks, only: [setup_users: 1]
 
     @user_doc """
@@ -94,6 +92,13 @@ defmodule GraphqlUsersApiWeb.Schema.Queries.UserTest do
       )
     users
   end
+
+  defp camel_case_string_to_snake_case_atom(str) do
+    str
+    |> Macro.underscore
+    |> String.to_atom
+  end
+
   defp ids_of_matching_occurrence_by_type_from_users(map_of_users, preference_type) do
     Enum.reduce(map_of_users, [], fn (x, acc) ->
       if Map.get(x.preferences, preference_type) do
