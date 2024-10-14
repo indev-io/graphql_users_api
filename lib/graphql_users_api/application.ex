@@ -11,7 +11,7 @@ defmodule GraphqlUsersApi.Application do
     children = [
       GraphqlUsersApi.Repo,
       GraphqlUsersApiWeb.Telemetry,
-      GraphqlUsersApi.Processes.ResolverHitTracker,
+      GraphqlUsersApi.ResolverHitTracker,
       {DNSCluster, query: Application.get_env(:graphql_users_api, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: GraphqlUsersApi.PubSub},
       # Start the Finch HTTP client for sending emails

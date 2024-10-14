@@ -1,4 +1,4 @@
-defmodule GraphqlUsersApi.Processes.ResolverHitTracker do
+defmodule GraphqlUsersApi.ResolverHitTracker do
   use Agent
 
   @default_name __MODULE__
@@ -29,5 +29,4 @@ defmodule GraphqlUsersApi.Processes.ResolverHitTracker do
       end
     end)
   end
-
 end
